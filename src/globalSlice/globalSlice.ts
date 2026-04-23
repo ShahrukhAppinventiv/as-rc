@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getPresignedUrl } from "./global-action";
 const initialValue = {
   loader: {
     isShowLoader: false,
@@ -15,6 +16,11 @@ export const globalSlice = createSlice({
     hideLoader: (state) => {
       state.loader.isShowLoader = false;
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(getPresignedUrl.fulfilled, (state) => {
+      state;
+    });
   },
 });
 

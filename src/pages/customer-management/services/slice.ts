@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getApiCall, putApiCall } from "../../../api/api.method";
 import endpoints from "../../../api/api.endpoint";
 import { hideLoader, showLoader } from "../../../globalSlice/globalSlice";
-import type { UserDetailsType } from "../CustomerDetails";
+import type { UserDetailsType } from "../pages/customer-details";
 
 type State = {
   list: {};
@@ -13,12 +13,14 @@ type State = {
     search?: string;
     status?: string;
   };
+  isFilterApplied: boolean;
 };
 
 const initialState: State = {
   list: {},
   details: null,
   listParams: { page: 0, limit: 10 },
+  isFilterApplied: false,
 };
 const customerManagementSlice = createSlice({
   name: "customerManagementSlice",
@@ -36,9 +38,19 @@ const customerManagementSlice = createSlice({
     resetListParams: (state) => {
       state.listParams = { page: 0, limit: 10, search: "" };
     },
+    addFilter: (state) => {
+      state.isFilterApplied = true;
+    },
+    removeFilter: (state) => {
+      state.isFilterApplied = false;
+    },
     resetCustomerDetails: (state) => {
       state.details = null;
     },
+    resetSearch: (state) => {
+      state.listParams.search = "";
+    },
+    resetCustomerState: () => initialState,
   },
   extraReducers(builder) {
     builder
@@ -121,6 +133,10 @@ export const {
   setListParams,
   resetListParams,
   resetCustomerDetails,
+  addFilter,
+  removeFilter,
+  resetCustomerState,
+  resetSearch,
 } = customerManagementSlice.actions;
 
 export default customerManagementSlice.reducer;

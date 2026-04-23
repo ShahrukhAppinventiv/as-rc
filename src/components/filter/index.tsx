@@ -13,12 +13,12 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useAppSelector, type AppDispatch } from "../../store/store";
-import { setListParams } from "../../pages/CustomerManagement/services/slice";
+import { addFilter, removeFilter, setListParams } from "../../pages/customer-management/services/slice";
 import { useEffect, useState } from "react";
 
 const STATUS_OPTIONS = ["ACTIVE", "INACTIVE"];
 
-export default function Filter({closeFilter,setIsFilterApplied}) {
+export default function Filter({ closeFilter }) {
     const dispatch = useDispatch<AppDispatch>();
 
     const listParams = useAppSelector(
@@ -52,12 +52,13 @@ export default function Filter({closeFilter,setIsFilterApplied}) {
         dispatch(
             setListParams({
                 ...listParams,
-                page: 1,
+                page: 0,
                 status: statusToSend,
             })
         );
-         closeFilter(null)
-         setIsFilterApplied(true)
+        closeFilter(null)
+        dispatch(addFilter())
+        setIsFilterApplied(true)
     };
 
     // Reset
@@ -67,11 +68,12 @@ export default function Filter({closeFilter,setIsFilterApplied}) {
         dispatch(
             setListParams({
                 ...listParams,
-                page: 1,
+                page: 0,
                 status: undefined,
             })
         );
         closeFilter(null)
+        dispatch(removeFilter())
         setIsFilterApplied(false)
     };
 
@@ -79,61 +81,61 @@ export default function Filter({closeFilter,setIsFilterApplied}) {
 
     return (
         <>
-        <div >
-            {/* 🔹 Heading */}
-            <Typography variant="h6" sx={{ mb: 1 }}>
-                Filters
-            </Typography>
+            <div >
+                {/* 🔹 Heading */}
+                <Typography variant="h6" sx={{ mb: 1 }}>
+                    Filters
+                </Typography>
 
-            <Divider sx={{ mb: 2 }} />
+                <Divider sx={{ mb: 2 }} />
 
-            {/* 🔹 Filter Row */}
-            <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap" }}>
-                <FormControl sx={{ minWidth: 240 }} size="small">
-                    <InputLabel>Status</InputLabel>
+                {/* 🔹 Filter Row */}
+                <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap" }}>
+                    <FormControl sx={{ minWidth: 240 }} size="small">
+                        <InputLabel>Status</InputLabel>
 
-                    <Select
-                        multiple
-                        value={tempStatus}
-                        onChange={handleChange}
-                        renderValue={(selected) => selected.join(", ")}
-                        label="Status"
+                        <Select
+                            multiple
+                            value={tempStatus}
+                            onChange={handleChange}
+                            renderValue={(selected) => selected.join(", ")}
+                            label="Status"
+                        >
+                            {STATUS_OPTIONS.map((status) => (
+                                <MenuItem key={status} value={status}>
+                                    <Checkbox checked={tempStatus.includes(status)} />
+                                    <ListItemText primary={status} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Box>
+
+                {/* 🔹 Buttons */}
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        gap: 2,
+                        mt: 3
+                    }}
+                >
+                    <Button
+                        variant="outlined"
+                        onClick={resetFilter}
                     >
-                        {STATUS_OPTIONS.map((status) => (
-                            <MenuItem key={status} value={status}>
-                                <Checkbox checked={tempStatus.includes(status)} />
-                                <ListItemText primary={status} />
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-            </Box>
+                        Reset
+                    </Button>
 
-            {/* 🔹 Buttons */}
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    gap: 2,
-                    mt: 3
-                }}
-            >
-                <Button
-                    variant="outlined"
-                    onClick={resetFilter}
-                >
-                    Reset
-                </Button>
-
-                <Button
-                    variant="contained"
-                    disabled={isDisabled}
-                    onClick={applyFilter}
-                >
-                    Apply
-                </Button>
-            </Box>
-        </div>
+                    <Button
+                        variant="contained"
+                        disabled={isDisabled}
+                        onClick={applyFilter}
+                    >
+                        Apply
+                    </Button>
+                </Box>
+            </div>
         </>
     );
 }

@@ -22,7 +22,17 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".", 
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@common/*": ["src/common/*"],
+      "@api/*": ["src/api/*"],
+      "@globalSlice/*": ["src/globalSlice/*"],
+      "@store/*": ["src/store/*"],
+      "@constants/*": ["src/constants/*"],
+      "@hooks/*": ["src/hooks/*"],
+    }
   },
-  "include": ["src", "src/pages/Profile/.tsx"]
+  "include": ["src", ]
 }

@@ -55,7 +55,7 @@ export default function Header({ setCollapsed }: HeaderProps) {
         handleClose()
     }
     useEffect(() => {
-        dispatch(getProfileDetails()).unwrap()
+        // dispatch(getProfileDetails()).unwrap()
     }, [])
 
 
@@ -127,6 +127,13 @@ export default function Header({ setCollapsed }: HeaderProps) {
                                 vertical: 'bottom',
                                 horizontal: 'right',
                             }}
+                            slotProps={{
+                                paper: {
+                                    sx: {
+                                        width: 150,
+                                    },
+                                },
+                            }}
                             keepMounted
                             transformOrigin={{
                                 vertical: 'top',
@@ -135,8 +142,8 @@ export default function Header({ setCollapsed }: HeaderProps) {
                             open={isMenuOpen}
                             onClose={handleClose}
                         >
-                            <MenuItem onClick={navigateToProfile}><CgProfile size={24} className="mr-2"/>Profile</MenuItem>
-                            <MenuItem onClick={handleClickOpenDialog}><FiLogOut size={24} className="mr-2"/>Logout</MenuItem>
+                            <MenuItem onClick={navigateToProfile}><CgProfile size={24} className="mr-2" />Profile</MenuItem>
+                            <MenuItem onClick={handleClickOpenDialog}><FiLogOut size={24} className="mr-2" />Logout</MenuItem>
                         </Menu>
 
                     </Toolbar>

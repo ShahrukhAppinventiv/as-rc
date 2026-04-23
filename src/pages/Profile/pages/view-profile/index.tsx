@@ -25,7 +25,19 @@ export default function ViewProfile() {
                 {/* Top Section */}
                 <div className="flex justify-between items-start">
                     {/* Avatar */}
-                    {profileDetails?.profilePicture ? <img className='rounded-full object-cover' src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${profileDetails.profilePicture}`} alt="" /> : <Avatar sx={{ width: 120, height: 120 }} />}
+                    <div className="w-[120px] h-[120px] rounded-full overflow-hidden bg-gray-200 flex items-center justify-center border">
+                        {profileDetails?.profilePicture ? (
+                            <img
+                                src={encodeURI(`${import.meta.env.VITE_IMAGE_BASE_URL}/${profileDetails.profilePicture}`)}
+                                alt="profile"
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <Avatar sx={{ width: "100%", height: "100%" }} />
+                        )}
+                    </div>
+
+                    {/* {profileDetails?.profilePicture ? <img className='rounded-full object-cover w-120 h-120' src={`${import.meta.env.VITE_IMAGE_BASE_URL}/${profileDetails.profilePicture}`} alt="" /> : <Avatar sx={{ width: 120, height: 120 }} />} */}
                     <Button sx={{ textTransform: "none" }} onClick={() => navigate(Paths.EDIT_PROFILE)} variant="contained">Edit Profile</Button>
                 </div>
 

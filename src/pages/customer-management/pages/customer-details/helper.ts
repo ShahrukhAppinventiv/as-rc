@@ -1,10 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useAppSelector, type AppDispatch } from "../../../store/store";
+import { useAppSelector, type AppDispatch } from "../../../../store/store";
 import { useEffect, useState } from "react";
-import { getcustomerDetails, resetCustomerDetails } from "../services/slice";
-import useBreadcrumbs from "../../../components/breadcrumbs/helper";
-import type { UserDetailsType } from "../services/type";
+import { getcustomerDetails, resetCustomerDetails } from "../../services/slice";
+import useBreadcrumbs from "../../../../components/breadcrumbs/helper";
+import type { UserDetailsType } from "../../services/type";
 
 export const useCustomerDetails = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,7 +14,7 @@ export const useCustomerDetails = () => {
   // );
   const isLoading = false;
 
-  const { customerId } = useParams<string>();
+  const { id } = useParams<string>();
 
   const userDetails: UserDetailsType = useAppSelector(
     (state) => state.customerManagementSlice.details,
@@ -23,11 +23,11 @@ export const useCustomerDetails = () => {
   const breadcrumbs = useBreadcrumbs("CUSTOMER_MANAGEMENT_DETAILS");
 
   useEffect(() => {
-    dispatch(getcustomerDetails({ customerId: customerId })).unwrap();
+    dispatch(getcustomerDetails({ customerId: id })).unwrap();
   }, []);
   useEffect(() => {
     return () => {
-      dispatch(resetCustomerDetails())
+      dispatch(resetCustomerDetails());
     };
   }, []);
 

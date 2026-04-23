@@ -1,8 +1,8 @@
 import { Bar } from "react-chartjs-2";
 import { Pie } from 'react-chartjs-2';
 import { Card } from "@mui/material";
-import Breadcrumbs from "../../components/breadcrumbs";
 import useDashboard from "./helper";
+import Breadcrumbs from "@components/breadcrumbs";
 
 export default function Dashboard() {
   const { breadcrumbs } = useDashboard()

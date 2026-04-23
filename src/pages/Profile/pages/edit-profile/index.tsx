@@ -11,17 +11,12 @@ import { useFormik } from 'formik';
 import * as Yup from "yup";
 import { useEffect, useState } from 'react';
 import { getProfileDetails, updateProfileDetails } from '../../services/slice';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import CommonDialog from '../../../../components/dialog-box';
 import { toast } from 'react-toastify';
 
 export default function EditProfile() {
 
-    const { navigate, dispatch, breadcrumbs, profileDetails } = useEditProfile()
+    const { navigate, dispatch, breadcrumbs, profileDetails, openCancelDialog, toggleCancelDialog } = useEditProfile()
     const [openDialog, setOpenDialog] = useState<boolean>(false)
     const profileFormSchema = Yup.object({
         fullName: Yup.string().required('Please enter full name'),
@@ -95,40 +90,25 @@ export default function EditProfile() {
 
                         </div>
                         <div className="flex justify-center gap-3 mt-4">
-                            <Button onClick={() => navigate(Paths.ADMIN_PROFILE)} sx={{ width: "200px" }} variant="outlined">Cancel</Button>
+                            <Button onClick={toggleCancelDialog} sx={{ width: "200px" }} variant="outlined">Cancel</Button>
                             <Button type='submit' sx={{ width: "200px" }} variant="contained">Save</Button>
                         </div>
 
                     </form>
 
                 </div>
-                <Dialog
-                    open={openDialog}
-                    onClose={() => setOpenDialog(false)}
-                    role="alertdialog"
-                    sx={{
-                        "& .MuiDialog-paper": {
-                            width: "400px",
-                            maxWidth: "none",
-                        },
+
+                <CommonDialog
+                    open={openCancelDialog}
+                    title="Cancel"
+                    description={`Are you sure you want to Cancel ?`}
+                    onClose={toggleCancelDialog}
+                    onConfirm={() => {
+                        toggleCancelDialog();
+                        navigate(Paths.ADMIN_PROFILE)
                     }}
-                >
-                    {/* <DialogTitle id="alert-dialog-title">
-                        {"Update Profile"}
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Are you sure you want to update profile ?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions sx={{
-                        justifyContent: "center",
-                        padding: "20px"
-                    }}>
-                        <Button onClick={() => setOpenDialog(false)} variant="outlined">No</Button>
-                        <Button onClick={profileHandler} variant="contained">Yes</Button>
-                    </DialogActions>
-                </Dialog> */}
+                    cancelText='Cancel'
+                />
 
                 <CommonDialog
                     open={openDialog}
@@ -138,7 +118,7 @@ export default function EditProfile() {
                     onConfirm={profileHandler}
                     confirmText='Update'
                     cancelText='Cancel'
-                /></Dialog>
+                />
 
             </Card>
         </>

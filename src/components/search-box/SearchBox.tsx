@@ -11,18 +11,18 @@ type SidebarProps = {
     placeholder: string;
     onSearch: (value: string) => void;
 };
-export default function SearchBox({ placeholder, onSearch }: SidebarProps) {
+export default function SearchBox({ placeholder, onSearch, }: SidebarProps) {
     const [value, setValue] = useState("");
 
     useEffect(() => {
-        if(!value) return
+        // if(!value) return
         const searchHandler = setTimeout(() => {
             onSearch(value.trim())
         }, 500);
         return () => {
             clearTimeout(searchHandler)
         }
-    }, [value, onSearch])
+    }, [value])
 
     const clearSearch = () => {
         setValue("")
@@ -33,7 +33,6 @@ export default function SearchBox({ placeholder, onSearch }: SidebarProps) {
             sx={{ '& > :not(style)': { m: 1, width: '65ch' } }}
             noValidate
             autoComplete="off"
-
         >
             <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" >
                 <OutlinedInput

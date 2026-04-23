@@ -1,11 +1,21 @@
 
 import { NavLink } from "react-router-dom";
-import { menuItems } from "./Sidebar.helper";
+import { useSidebarHelper } from "./Sidebar.helper";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'
 type SidebarProps = {
   collapsed: boolean;
 };
 
 export default function Sidebar({ collapsed }: SidebarProps) {
+
+  const { sidebarMenus, hasAccess, profileDetails } = useSidebarHelper()
+
+  const filteredMenu = sidebarMenus.filter(item =>
+    hasAccess(profileDetails, item.module, "view")
+  );
+
+
 
   return (
     <div
@@ -14,7 +24,17 @@ export default function Sidebar({ collapsed }: SidebarProps) {
   ${collapsed ? "w-20" : "w-64"}`}
     >
       <ul className="mt-4 h-[calc(100%-60px)] overflow-y-auto">
-        {menuItems.map((item) => {
+
+        {!filteredMenu.length &&
+          Array.from({ length: 5 }).map((_, i) => (
+            <li key={i} className="px-4 py-3 flex items-center gap-3">
+              <Skeleton circle width={20} height={20} />
+              {!collapsed && (
+                <Skeleton width={120} height={15} />
+              )}
+            </li>
+          ))}
+        {filteredMenu.length && filteredMenu.map((item) => {
           const Icon = item.icon
           return (
             <li key={item.name}>
@@ -31,9 +51,7 @@ export default function Sidebar({ collapsed }: SidebarProps) {
               >
                 <span className="text-xl min-w-[24px]">
                   {Icon && <Icon size={20} />}
-                  {/* <Item /> */}
                 </span>
-
                 <span
                   className={`whitespace-nowrap transition-all duration-200
           ${collapsed
