@@ -1,10 +1,9 @@
 import Breadcrumbs from "@components/breadcrumbs";
 import { useUserListHelper } from "./user-list-helper";
 import SearchBox from "@components/search-box/SearchBox";
-import { Badge, Button, Menu, MenuItem } from "@mui/material";
+import { Button, Menu, MenuItem } from "@mui/material";
 import { useCallback, useState } from "react";
 import { setListParams } from "../../services/user-management-slice";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import Fitler from "@components/filter";
 import CommonTable from "@components/table";
 import Pagination from "@components/pagination/Pagination";
@@ -18,14 +17,10 @@ export default function UserList() {
         listParams,
         userList,
         isLoading,
-        isFilteApplied,
         navigate,
     } = useUserListHelper();
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const handleFilterOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
     const handleSearch = useCallback(
         (value: string) => {
             dispatch(
@@ -47,12 +42,6 @@ export default function UserList() {
                     placeholder="Search by Customer Name"
                     onSearch={handleSearch}
                 />
-                {/* <Badge color="secondary" variant="dot" invisible={!isFilteApplied}>
-                    <span onClick={handleFilterOpen} className='cursor-pointer'>
-
-                        <FilterListIcon />
-                    </span>
-                </Badge> */}
                 <Button
                     sx={{ textTransform: "none", width: "150px" }}
                     variant="contained"
@@ -73,11 +62,11 @@ export default function UserList() {
             </div>
             <CommonTable
                 tableHeader={tableHeading}
-                data={userList?.data?.items}
+                data={userList?.data?.items ?? []}
                 isLoading={isLoading}
             />
             <Pagination
-                total={userList?.data?.meta.totalItems}
+                total={userList?.data?.meta.totalItems ?? 0}
                 page={listParams?.page || 0}
                 limit={listParams?.limit || 10}
                 onPagination={(newPage: any) =>

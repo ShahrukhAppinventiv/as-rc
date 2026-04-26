@@ -8,8 +8,9 @@ import {
   addUser,
   editUser,
 } from "./action";
+import type { UserListResponse } from "./types";
 type State = {
-  list: {};
+  list: UserListResponse | null;
   details: any | null;
   listParams: {
     page: number;
@@ -23,7 +24,7 @@ type State = {
 };
 
 const initialState: State = {
-  list: {},
+  list: null,
   details: null,
   listParams: { page: 0, limit: 10 },
   isFilterApplied: false,

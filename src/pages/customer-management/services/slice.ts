@@ -2,11 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getApiCall, putApiCall } from "../../../api/api.method";
 import endpoints from "../../../api/api.endpoint";
 import { hideLoader, showLoader } from "../../../globalSlice/globalSlice";
-import type { UserDetailsType } from "../pages/customer-details";
+import type { Customer, CustomerListApiResponse } from "./type";
 
 type State = {
-  list: {};
-  details: UserDetailsType | null;
+  list: CustomerListApiResponse | null;
+  details: Customer | null;
   listParams: {
     page: number;
     limit: number;
@@ -17,7 +17,7 @@ type State = {
 };
 
 const initialState: State = {
-  list: {},
+  list: null,
   details: null,
   listParams: { page: 0, limit: 10 },
   isFilterApplied: false,
@@ -68,7 +68,7 @@ const customerManagementSlice = createSlice({
         state.list = action.payload;
       })
       .addCase(getcustomerList.rejected, (state) => {
-        state.list = {};
+        state.list = null;
       });
   },
 });

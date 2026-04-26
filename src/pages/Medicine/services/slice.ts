@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getApiCall, postApiCall } from "../../../api/api.method";
+import { postApiCall } from "../../../api/api.method";
 import endpoints from "../../../api/api.endpoint";
 import { hideLoader, showLoader } from "../../../globalSlice/globalSlice";
+
 const initialState: any = {
   medicineList: {},
 };
@@ -13,10 +14,10 @@ const medicineSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(getMedicineList.fulfilled, (state, action) => {
-        state.medicine = action.payload;
+        state.medicineList = action.payload || {};
       })
       .addCase(getMedicineList.rejected, (state) => {
-        state.list = {};
+        state.medicineList = {};
       });
   },
 });
@@ -30,9 +31,10 @@ export const getMedicineList = createAsyncThunk(
         endpoints.main.medicine,
         params,
       );
-      console.log(medicineResponse.data);
+      return medicineResponse?.data;
     } catch (err) {
       console.log(err);
+      throw err;
     } finally {
       thunkApi.dispatch(hideLoader());
     }

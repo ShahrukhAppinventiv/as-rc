@@ -1,8 +1,10 @@
 import { Paths } from "@constants/path";
 import { Chip } from "@mui/material";
 import { ActionMenu } from "./actionMenu";
+import type { TableHeader } from "@components/table";
+import type { User } from "./types";
 
-export const USER_TABLE_HEADER = [
+export const USER_TABLE_HEADER: TableHeader<User>[] = [
     {
         label: "User Id", key: "adminId", render: (row: any, navigate: any) => (
             <span className="cursor-pointer underline"
@@ -27,5 +29,5 @@ export const USER_TABLE_HEADER = [
                 }}
             />
     },
-     { label: "Action", key: "actions", render: (row: any) => <ActionMenu row={row} /> },
+    { label: "Action", key: "actions", render: (row: any) => <ActionMenu row={row} /> },
 ];

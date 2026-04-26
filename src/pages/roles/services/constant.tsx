@@ -2,8 +2,10 @@ import { Chip } from "@mui/material";
 import { transformDate } from "../../../common/utils/common.fn";
 import { Paths } from "../../../constants/path";
 import { ActionMenu } from "./actionMenu";
+import type { TableHeader } from "@components/table";
+import type { Role } from "./types";
 
-export const ROLES_TABLE_HEADER = [
+export const ROLES_TABLE_HEADER: TableHeader<Role>[] = [
     {
         label: "Name", key: "name", render: (row: any, navigate: any) => (
             <span className="cursor-pointer underline"

@@ -6,23 +6,38 @@ export interface UserDetailsType {
   email: string | null;
   status: "ACTIVE" | "INACTIVE" | string;
   gender: "MALE" | "FEMALE" | string | null;
-  dob: string | null; // can be empty ""
+  dob: string | null;
   platform: string | null;
   points: number | null;
-  createdAt: string; // ISO date string
+  createdAt: string;
   customerId: string;
   id: string;
   tierId: string | null;
   tier: any;
 }
 
-export type UserType = {
+export type Customer = {
   id: string;
-  customerId: string;
   fullName: string | null;
   email: string | null;
-  phone: string;
   countryCode: string;
+  phone: string;
   status: string;
-  actions:string
+  platform: string | null;
+  customerId: string;
+  createdAt: string;
+  tier: any;
+};
+
+export type CustomerListResponse = {
+  users: Customer[];
+  total: number;
+  page: number;
+  limit: number;
+};
+
+export type CustomerListApiResponse = {
+  statusCode: number;
+  message: string;
+  data: CustomerListResponse;
 };

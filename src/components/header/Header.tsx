@@ -15,10 +15,10 @@ import { useNavigate } from "react-router-dom";
 import { Paths } from "../../constants/path";
 import { useAppSelector, type AppDispatch } from "../../store/store";
 import { useDispatch } from "react-redux";
-import { getProfileDetails } from "../../pages/Profile/services/slice";
 import CommonDialog from "../dialog-box";
 import { CgProfile } from "react-icons/cg";
 import { FiLogOut } from "react-icons/fi";
+import { hideLoader, showLoader } from "@globalSlice/globalSlice";
 
 
 type HeaderProps = {
@@ -61,6 +61,7 @@ export default function Header({ setCollapsed }: HeaderProps) {
 
     const logoutHandler = async () => {
         try {
+            dispatch(showLoader())
             await postApiCall(endpoints.main.logout);
             setOpenLogoutDialog(false);
             localStorage.clear();
@@ -68,6 +69,9 @@ export default function Header({ setCollapsed }: HeaderProps) {
             toast.success("Logout successfully");
         } catch (err) {
 
+        }
+        finally{
+            dispatch(hideLoader())
         }
 
     }

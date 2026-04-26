@@ -9,6 +9,7 @@ export const getUserList = createAsyncThunk(
     try {
       thunkApi.dispatch(showLoader());
       const userDetailsResponse = await getApiCall(endpoints.main.user, params);
+      console.log(userDetailsResponse.data)
       return userDetailsResponse.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);

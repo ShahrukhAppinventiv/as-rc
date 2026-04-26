@@ -59,7 +59,7 @@ export const useSidebarHelper = () => {
       module: "user",
     },
     {
-      name: "Medicine",
+      name: "Item Management",
       icon: Icons.MEDICINE,
       path: Paths.MEDICINE,
       module: "item",

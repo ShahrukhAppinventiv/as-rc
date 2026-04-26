@@ -1,43 +1,48 @@
-
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import NotFound from '../not-found/NotFound';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'
-import { useNavigate } from 'react-router-dom';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import NotFound from "../not-found/NotFound";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { useNavigate } from "react-router-dom";
 
 export type TableHeader<T> = {
     label: string;
-    key: keyof T;
+    key?: keyof T;
     render?: (row: T, navigate?: any) => React.ReactNode;
 };
 
 type tableHeaderProp<T> = {
-    tableHeader: TableHeader<T>[],
-    data: T[],
-    renderers?: Partial<Record<keyof T, (row: T, navigate?: any) => React.ReactNode>>;
-    isLoading?: boolean,
-}
-export default function CommonTable<T>({ tableHeader, data = [], renderers = {}, isLoading = false }: tableHeaderProp<T>) {
-    const navigatge = useNavigate()
+    tableHeader: TableHeader<T>[];
+    data: T[];
+    isLoading?: boolean;
+};
+export default function CommonTable<T>({
+    tableHeader,
+    data = [],
+    isLoading = false,
+}: tableHeaderProp<T>) {
+    const navigatge = useNavigate();
     return (
         <>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
-                        <TableRow className='bg-gray-200' sx={{
-                            '& .MuiTableCell-root': {
-                                fontWeight: 'bold',
-                            },
-                        }}>{
-                                tableHeader.map((heading, index) => <TableCell key={index}>{heading.label}</TableCell>)
-                            }
-
+                        <TableRow
+                            className="bg-gray-200"
+                            sx={{
+                                "& .MuiTableCell-root": {
+                                    fontWeight: "bold",
+                                },
+                            }}
+                        >
+                            {tableHeader.map((heading, index) => (
+                                <TableCell key={index}>{heading.label}</TableCell>
+                            ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -54,28 +59,17 @@ export default function CommonTable<T>({ tableHeader, data = [], renderers = {},
                         ) : data.length ? (
                             data.map((row: T, index) => (
                                 <TableRow key={index}>
-                                    {/* {tableHeader.map((heading) => {
-                                        const renderer = renderers?.[heading.key];
-
-                                        return (
-                                            <TableCell key={String(heading.key)}>
-                                                {renderer
-                                                    ? renderer(row, navigatge)
-                                                    : String(row[heading.key] ?? '-')}
-                                            </TableCell>
-                                        );
-                                    })} */}
                                     {tableHeader.map((heading) => {
-
                                         return (
                                             <TableCell key={String(heading.key)}>
                                                 {heading.render
                                                     ? heading.render(row, navigatge)
-                                                    : String(row[heading.key] ?? '-')}
+                                                    : (heading.key ? String(row[heading.key] ?? "-") : "")
+                                                    // String(row[heading.key] ?? "-")
+                                                }
                                             </TableCell>
                                         );
                                     })}
-
                                 </TableRow>
                             ))
                         ) : (
@@ -89,5 +83,5 @@ export default function CommonTable<T>({ tableHeader, data = [], renderers = {},
                 </Table>
             </TableContainer>
         </>
-    )
+    );
 }
