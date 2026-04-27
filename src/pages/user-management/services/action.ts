@@ -9,8 +9,7 @@ export const getUserList = createAsyncThunk(
     try {
       thunkApi.dispatch(showLoader());
       const userDetailsResponse = await getApiCall(endpoints.main.user, params);
-      console.log(userDetailsResponse.data)
-      return userDetailsResponse.data;
+      return userDetailsResponse;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {
@@ -65,7 +64,7 @@ export const getRolesDropdown = createAsyncThunk(
       const userDetailsResponse = await getApiCall(
         endpoints.main.rolesDropdown,
       );
-      return userDetailsResponse.data.data;
+      return userDetailsResponse.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {
@@ -81,7 +80,7 @@ export const getBranchDropdown = createAsyncThunk(
       const userDetailsResponse = await getApiCall(
         endpoints.main.branchDropwon,
       );
-      return userDetailsResponse.data.data;
+      return userDetailsResponse.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {
@@ -96,7 +95,7 @@ export const getUserDetails = createAsyncThunk(
     try {
       thunkApi.dispatch(showLoader());
       const response = await getApiCall(`${endpoints.main.user}/${params.id}`);
-      return response.data.data;
+      return response.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {
@@ -110,10 +109,10 @@ export const updateUserStatus = createAsyncThunk(
   async (params: any, thunkApi) => {
     try {
       thunkApi.dispatch(showLoader());
-      const userDetailsResponse = await putApiCall(
+      const updateUserResponse = await putApiCall(
         `${endpoints.main.userStatusUpdate}/${params.id}/${params.status}`,
       );
-      return userDetailsResponse.data.data;
+      return updateUserResponse
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {

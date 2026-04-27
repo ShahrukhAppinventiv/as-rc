@@ -1,5 +1,9 @@
 import { useDispatch } from "react-redux";
-import { getPermissionsListing, getRoleDetails } from "../../services/role-slice";
+import {
+  getPermissionsListing,
+  getRoleDetails,
+  resetRoleDetails,
+} from "../../services/role-slice";
 import { useAppSelector, type AppDispatch } from "../../../../store/store";
 import { useEffect, useState } from "react";
 import useBreadcrumbs from "../../../../components/breadcrumbs/helper";
@@ -35,6 +39,11 @@ export const useAddEditRoleHelper = () => {
     if (roleId) {
       dispatch(getRoleDetails({ id: roleId }));
     }
+    return () => {
+      if (roleId) {
+        dispatch(resetRoleDetails());
+      }
+    };
   }, [roleId]);
 
   const transformPermissions = (data: any[], selectedIds: string[] = []) => {

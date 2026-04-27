@@ -13,6 +13,9 @@ import {
     InputAdornment,
     CircularProgress,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { login } from "../service/action";
+import type { AppDispatch } from "@store/store";
 
 type LoginForm = {
     email: string;
@@ -21,6 +24,7 @@ type LoginForm = {
 
 export default function Login() {
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>()
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [loading, setLoading] = useState(false)
     const loginFormSchema = Yup.object({
@@ -32,10 +36,8 @@ export default function Login() {
     const submitHandler = async (data: LoginForm) => {
         try {
             setLoading(true)
-            const loginResponse = await postApiCall(endpoints.auth.login, data)
-            console.log(loginResponse)
-            toast.success("Login successful ");
-            localStorage.setItem("token", loginResponse?.data.data.accessToken);
+           const loginResponse =  await dispatch(login(data)).unwrap();
+            console.log("login after api",loginResponse)
             navigate("/dashboard");
         } catch (err) {
             console.log(err)

@@ -23,7 +23,7 @@ export default function RolesListing() {
             <Breadcrumbs items={breadcrumbs} />
             <div className="flex justify-between items-center">
                 <SearchBox
-                    placeholder="Search by Customer Name"
+                    placeholder="Search by Name"
                     onSearch={(value) =>
                         dispatch(
                             setRoleListParams({

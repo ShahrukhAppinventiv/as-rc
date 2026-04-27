@@ -67,24 +67,32 @@ const userManagementSlice = createSlice({
       .addCase(getUserList.fulfilled, (state, action) => {
         state.list = action.payload;
       })
+      .addCase(getUserList.rejected, (state) => state)
       .addCase(getUserDetails.fulfilled, (state, action) => {
         state.details = action.payload;
       })
+      .addCase(getUserDetails.rejected, (state) => state)
       .addCase(updateUserStatus.fulfilled, (state) => {
         state;
       })
+      .addCase(updateUserStatus.rejected, (state) => state)
+
       .addCase(getRolesDropdown.fulfilled, (state, action) => {
         state.rolesDropdown = action.payload;
       })
+      .addCase(getRolesDropdown.rejected, (state) => state)
       .addCase(getBranchDropdown.fulfilled, (state, action) => {
         state.branchDropdown = action.payload;
       })
+      .addCase(getBranchDropdown.rejected, (state) => state)
       .addCase(addUser.fulfilled, (state) => {
         state;
       })
+      .addCase(addUser.rejected, (state) => state)
       .addCase(editUser.fulfilled, (state) => {
         state;
-      });
+      })
+      .addCase(editUser.rejected, (state) => state);
   },
 });
 

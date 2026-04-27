@@ -17,7 +17,7 @@ export const CUSTOMER_TABLE_HEADER: TableHeader<Customer>[] = [
             </span>
         ),
     },
-    { label: "Full Name", key: "fullName" },
+    { label: "Name", key: "fullName" },
     { label: "Email", key: "email" },
     { label: "Phone", key: "phone" },
     {

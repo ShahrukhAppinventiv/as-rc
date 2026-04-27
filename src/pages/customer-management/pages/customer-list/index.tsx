@@ -37,7 +37,7 @@ export default function CustomerManagement() {
             <div className='flex justify-between'>
 
                 <SearchBox
-                    placeholder="Search by Customer Name"
+                    placeholder="Search by Name, Email"
                     onSearch={handleSearch}
                 />
                 <Badge color="secondary" variant="dot" invisible={!isFilteApplied}>

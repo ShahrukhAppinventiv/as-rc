@@ -32,23 +32,7 @@ export default function CustomerDetails() {
 
     };
 
-    // const loadUserDetails = async () => {
-    //     try {
-    //         setIsLoading(true)
-    //         const params = {
-    //             customerId
-    //         }
-    //         const userDetailsResponse = await getApiCall(endpoints.main.customerDetails, params)
-    //         console.log(userDetailsResponse)
-    //         setUserDetails(userDetailsResponse.data.data.resObj)
 
-    //     } catch (err) {
-
-    //     } finally {
-    //         setIsLoading(false)
-
-    //     }
-    // }
     const Field = ({ label, value }: any) => (
         <div>
             <p className="text-base font-semibold">{label}</p>

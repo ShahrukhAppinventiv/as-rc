@@ -58,7 +58,7 @@ export default function AddEditRole() {
         } else {
             await dispatch(addRole(payload));
         }
-        toast.success(`Role has been ${roleId ? 'added' : 'updated'} successfully`)
+        toast.success(`Role has been ${roleId ? 'updated' : 'added'} successfully`)
         navigate(Paths.ROLES)
 
     }

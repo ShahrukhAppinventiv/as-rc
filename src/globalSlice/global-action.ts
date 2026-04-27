@@ -12,7 +12,7 @@ export const getPresignedUrl = createAsyncThunk(
         endpoints.common.presignedUrl,
         payload,
       );
-      return response.data.data;
+      return response.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {

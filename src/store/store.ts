@@ -1,4 +1,4 @@
-import { configureStore,combineReducers } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { useSelector, type TypedUseSelectorHook } from "react-redux";
 import {
   persistStore,
@@ -8,7 +8,7 @@ import {
   PAUSE,
   PERSIST,
   PURGE,
-  REGISTER
+  REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import profileReducer from "../pages/Profile/services/slice";
@@ -17,7 +17,8 @@ import customerManagementReducer from "../pages/customer-management/services/sli
 import CmsSlice from "../pages/cms/service/slice";
 import MedicineSlice from "../pages/Medicine/services/slice";
 import RoleSlice from "../pages/roles/services/role-slice";
-import UserManagementSlice from "../pages/user-management/services/user-management-slice"
+import UserManagementSlice from "../pages/user-management/services/user-management-slice";
+import OnBoardingSlice from "../pages/Onboarding/service/onboarding-slice";
 
 // const persistConfig = {
 //   key: "root",
@@ -25,18 +26,15 @@ import UserManagementSlice from "../pages/user-management/services/user-manageme
 //   whitelist: ["customerManagementSlice"],
 // };
 
-
 const customerPersistConfig = {
   key: "customerManagement",
   storage,
 };
 
-
 const persistedCustomerReducer = persistReducer(
   customerPersistConfig,
-  customerManagementReducer
+  customerManagementReducer,
 );
-
 
 const rootReducer = combineReducers({
   globalSlice: globalReducer,
@@ -45,7 +43,8 @@ const rootReducer = combineReducers({
   cmsSlice: CmsSlice,
   medicineSlice: MedicineSlice,
   roleSlice: RoleSlice,
-  userManagementSlice: UserManagementSlice
+  userManagementSlice: UserManagementSlice,
+  onBoardingSlice: OnBoardingSlice,
 });
 
 // const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -55,25 +54,16 @@ const rootReducer = combineReducers({
 // });
 export const store = configureStore({
   reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [
-          FLUSH,
-          REHYDRATE,
-          PAUSE,
-          PERSIST,
-          PURGE,
-          REGISTER,
-        ],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
 });
 
 export const persistor = persistStore(store);
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

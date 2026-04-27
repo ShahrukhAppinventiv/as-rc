@@ -7,10 +7,13 @@ import type { Role } from "./types";
 
 export const ROLES_TABLE_HEADER: TableHeader<Role>[] = [
     {
-        label: "Name", key: "name", render: (row: any, navigate: any) => (
+        label: "Role Id", key: "roleId", render: (row: any, navigate: any) => (
             <span className="cursor-pointer underline"
-                onClick={() => navigate(`${Paths.ROLE_DETAILS}/${row.id}`)}>{row.name}</span>
+                onClick={() => navigate(`${Paths.ROLE_DETAILS}/${row.id}`)}>{row.roleId}</span>
         )
+    },
+    {
+        label: "Name", key: "name",
     },
     { label: "Members Aligned", key: "totalUser" },
     {

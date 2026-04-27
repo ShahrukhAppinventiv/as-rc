@@ -13,6 +13,9 @@ import {
 import { postApiCall } from "../../../api/api.method";
 import endpoints from "../../../api/api.endpoint";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@store/store";
+import { resetPassword } from "../service/action";
 
 type ResetForm = {
   password: string;
@@ -21,8 +24,8 @@ type ResetForm = {
 
 export default function ResetPassword() {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const { sessionToken } = useParams();
-  console.log("secons", sessionToken)
   const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false)
@@ -42,7 +45,9 @@ export default function ResetPassword() {
         ...data,
         sessionToken
       }
-      await postApiCall(endpoints.auth.resetPassword, payload);
+      // await postApiCall(endpoints.auth.resetPassword, payload);
+      await dispatch(resetPassword(payload))
+
       toast.success('Password reset successfully')
 
       navigate("/");

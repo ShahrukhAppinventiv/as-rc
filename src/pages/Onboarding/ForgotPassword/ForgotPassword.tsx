@@ -3,16 +3,18 @@ import { Paths } from "../../../constants/path";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { TextField, CircularProgress } from "@mui/material";
-import { postApiCall } from "../../../api/api.method";
-import endpoints from "../../../api/api.endpoint";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@store/store";
+import { forgot } from "../service/action";
 
 type ForgotPasswordForm = {
   email: string;
 };
 export default function ForgotPassword() {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>()
   const [loader, setLoader] = useState<boolean>(false)
   const forgotValidationSchema = Yup.object({
     email: Yup.string().email("Enter Valid Email").required("Email is required")
@@ -21,10 +23,10 @@ export default function ForgotPassword() {
   const submitHandler = async (data: ForgotPasswordForm) => {
     try {
       setLoader(true)
-      await postApiCall(endpoints.auth.forgotPpassword, data)
+      await dispatch(forgot(data)).unwrap()
+      localStorage.setItem('forgotEmail', data.email)
       navigate(`/${Paths.VERIFY_OTP}`);
       toast.success('Check your email for OTP')
-      localStorage.setItem('forgotEmail', data.email)
     } catch (err) {
       console.log(err)
     } finally {

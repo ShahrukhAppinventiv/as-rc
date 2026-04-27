@@ -41,7 +41,7 @@ export const getCmsData = createAsyncThunk(
       const cmsResponse = await getApiCall(endpoints.main.cms, {
         contentType,
       });
-      return cmsResponse.data.data;
+      return cmsResponse.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {

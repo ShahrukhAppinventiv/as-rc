@@ -35,6 +35,9 @@ const RoleSlice = createSlice({
     resetRoleListParams: (state) => {
       state.listParams = { page: 0, limit: 10, search: "" };
     },
+    resetRoleDetails: (state) => {
+      state.details = null;
+    },
   },
   extraReducers(builder) {
     builder
@@ -61,8 +64,7 @@ export const getRoleListing = createAsyncThunk(
         endpoints.main.roles,
         params,
       );
-      console.log(roleListingResponse.data);
-      return roleListingResponse.data;
+      return roleListingResponse;
     } catch (err) {
     } finally {
       thunkApi.dispatch(hideLoader());
@@ -95,10 +97,7 @@ export const updateRole = createAsyncThunk(
       const { id } = payload;
       delete payload.id;
       thunkApi.dispatch(showLoader());
-      const res = await putApiCall(
-        `${endpoints.main.roles}/${id}`,
-        payload,
-      );
+      const res = await putApiCall(`${endpoints.main.roles}/${id}`, payload);
       return res.data.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
@@ -113,8 +112,10 @@ export const getRoleDetails = createAsyncThunk(
   async (params: any, thunkApi) => {
     try {
       thunkApi.dispatch(showLoader());
-      const response = await getApiCall(`${endpoints.main.roles}/${params.id}`);
-      return response.data.data;
+      const roleDetailsResponse = await getApiCall(
+        `${endpoints.main.roles}/${params.id}`,
+      );
+      return roleDetailsResponse.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {
@@ -129,8 +130,7 @@ export const getPermissionsListing = createAsyncThunk(
     try {
       thunkApi.dispatch(showLoader());
       const response = await getApiCall(endpoints.main.permissionsListing);
-      console.log(response.data.data);
-      return response.data.data;
+      return response.data;
     } catch (err) {
     } finally {
       thunkApi.dispatch(hideLoader());
@@ -138,7 +138,11 @@ export const getPermissionsListing = createAsyncThunk(
   },
 );
 
-export const { getRoleListParams, setRoleListParams, resetRoleListParams } =
-  RoleSlice.actions;
+export const {
+  getRoleListParams,
+  setRoleListParams,
+  resetRoleListParams,
+  resetRoleDetails,
+} = RoleSlice.actions;
 
 export default RoleSlice.reducer;

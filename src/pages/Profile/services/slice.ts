@@ -32,7 +32,7 @@ export const getProfileDetails = createAsyncThunk(
     try {
       thunkApi.dispatch(showLoader());
       const userDetailsResponse = await getApiCall(endpoints.main.profile);
-      return userDetailsResponse.data.data;
+      return userDetailsResponse.data;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {

@@ -33,7 +33,6 @@ export default function AddEditUser() {
         useAddEditUserHelper();
 
     // const [preview, setPreview] = useState<string | null>(null);
-    const [value, setValue] = useState()
     const [imageFile, setImageFile] = useState<File | null>(null);
     const IMAGE_PREFIX = import.meta.env.VITE_IMAGE_BASE_URL;
     // ✅ Formik Setup
@@ -54,64 +53,52 @@ export default function AddEditUser() {
             branchId: Yup.string().required("Branch is required"),
         }),
         onSubmit: async (values: any) => {
-            console.log("Final Payload:", values);
-            console.log("Image File:", values.profilePicture);
-            if (values.profilePicture instanceof File) {
-                const body = {
-                    uploadType: 'profile/',
-                    filename: values.profilePicture.name,
-                };
-                const fileData = await dispatch(getPresignedUrl(body)).unwrap()
-                console.log('FileData--->', fileData)
-                const { presignedUrl } = fileData
-
-                const uploadRes = await uploadFileToS3(
-                    presignedUrl,
-                    values.profilePicture, {
-                    start: () => dispatch(showLoader()),
-                    end: () => dispatch(hideLoader())
-                }
-                );
-                if (!uploadRes.success) {
-                    toast.error("Image upload failed");
-                    return;
-                }
-                else {
-                    values.profilePicture = `${body.uploadType}${body.filename}`
-                }
-
-            }
-
-            if (!values) {
-                console.error("Formik values missing!");
-                return;
-            }
-            if (id) {
-                await dispatch(editUser({ id: id, ...values }))
-                toast.success("User has been updated successfully")
-            } else {
-                await dispatch(addUser(values))
-                toast.success("User has been added successfully")
-            }
-            navigate(Paths.USER_MANAGEMENT)
+            await addEditUserHandler(values)
         },
     });
 
-    // ✅ Image Upload Handler
-    // const handleImageUpload = (e: any) => {
-    //     const file = e.target.files[0];
 
-    //     if (file) {
-    //         // Max 200KB validation
-    //         if (file.size > 200 * 1024) {
-    //             alert("Max file size is 200KB");
-    //             return;
-    //         }
 
-    //         formik.setFieldValue("profilePicture", file);
-    //         setPreview(URL.createObjectURL(file));
-    //     }
-    // };
+    const addEditUserHandler = async (values: any) => {
+        if (values.profilePicture instanceof File) {
+            const body = {
+                uploadType: 'profile/',
+                filename: values.profilePicture.name,
+            };
+            const fileData = await dispatch(getPresignedUrl(body)).unwrap()
+            console.log('FileData--->', fileData)
+            const { presignedUrl } = fileData
+
+            const uploadRes = await uploadFileToS3(
+                presignedUrl,
+                values.profilePicture, {
+                start: () => dispatch(showLoader()),
+                end: () => dispatch(hideLoader())
+            }
+            );
+            if (!uploadRes.success) {
+                toast.error("Image upload failed");
+                return;
+            }
+            else {
+                values.profilePicture = `${body.uploadType}${body.filename}`
+            }
+
+        }
+        if (!values) {
+            console.error("Formik values missing!");
+            return;
+        }
+        if (id) {
+            await dispatch(editUser({ id: id, ...values })).unwrap()
+            toast.success("User has been updated successfully")
+        } else {
+            if (!values.profilePicture) delete values.profilePicture
+            await dispatch(addUser(values)).unwrap()
+            toast.success("User has been added successfully")
+        }
+        navigate(Paths.USER_MANAGEMENT)
+    }
 
     return (
         <>

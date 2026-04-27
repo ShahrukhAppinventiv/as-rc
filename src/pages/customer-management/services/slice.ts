@@ -82,7 +82,7 @@ export const getcustomerDetails = createAsyncThunk(
         endpoints.main.customerDetails,
         params,
       );
-      return userDetailsResponse.data.data.resObj;
+      return userDetailsResponse.data.resObj;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {
@@ -100,8 +100,8 @@ export const getcustomerList = createAsyncThunk(
         endpoints.main.customerListing,
         params,
       );
-      console.log(userDetailsResponse.data);
-      return userDetailsResponse.data;
+      console.log(userDetailsResponse);
+      return userDetailsResponse;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {
@@ -115,11 +115,11 @@ export const updatecustomerStatus = createAsyncThunk(
   async (params: any, thunkApi) => {
     try {
       thunkApi.dispatch(showLoader());
-      const userDetailsResponse = await putApiCall(
+      const updateCustomerResponse = await putApiCall(
         endpoints.main.customerStatusUpdate,
         params,
       );
-      return userDetailsResponse.data.data.resObj;
+      return updateCustomerResponse;
     } catch (err) {
       return thunkApi.rejectWithValue(err);
     } finally {

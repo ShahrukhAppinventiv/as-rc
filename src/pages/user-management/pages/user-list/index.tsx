@@ -39,7 +39,7 @@ export default function UserList() {
             <Breadcrumbs items={breadcrumb} />
             <div className="flex justify-between items-center">
                 <SearchBox
-                    placeholder="Search by Customer Name"
+                    placeholder="Search by Name, Email"
                     onSearch={handleSearch}
                 />
                 <Button

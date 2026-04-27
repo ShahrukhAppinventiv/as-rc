@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import OtpInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
-import { postApiCall } from "../../../api/api.method";
-import endpoints from "../../../api/api.endpoint";
 import { CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
 import { Paths } from "../../../constants/path";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@store/store";
+import { verfiyOTP } from "../service/action";
 
 function VerifyOTP() {
     const [otp, setOtp] = useState("");
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>()
     const [loader, setLoader] = useState<boolean>(false)
     const email = localStorage.getItem('forgotEmail')
 
@@ -21,11 +23,9 @@ function VerifyOTP() {
             const payload = {
                 email, otp
             }
-            const verifyOTPResponse = await postApiCall(endpoints.auth.verifyOTP, payload)
-            console.log(verifyOTPResponse)
-            localStorage.removeItem('forgotEmail')
+            const verifyOTPResponse = await dispatch(verfiyOTP(payload)).unwrap()
             toast.success('OTP verifed successfully')
-            navigate(`${Paths.RESET_PASSWORD}/${verifyOTPResponse.data.data.sessionToken}`);
+            navigate(`${Paths.RESET_PASSWORD}/${verifyOTPResponse.data.sessionToken}`);
         } catch (err) {
 
         } finally {
@@ -107,7 +107,7 @@ function VerifyOTP() {
                 className="mt-4 text-sm text-blue-500 hover:underline cursor-pointer"
                 onClick={() => navigate('/')}
             >
-               Back to Login
+                Back to Login
             </button>
         </div>
     );

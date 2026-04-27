@@ -25,9 +25,6 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -35,20 +32,17 @@ axiosInstance.interceptors.response.use(
     return res;
   },
   (error) => {
-    console.log(error);
     console.log("Errro ocucuered", error);
-
     const message =
       error?.response?.data?.message ||
       error?.response?.data?.error ||
       error?.message ||
       "Something went wrong";
     toast.error(message);
-    if (error?.data.status == 401) {
+    if (error?.response?.status === 401) {
       localStorage.clear();
       window.location.href = "/login";
     }
-
     return Promise.reject(error);
   },
 );
