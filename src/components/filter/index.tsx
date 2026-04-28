@@ -17,6 +17,12 @@ import { addFilter, removeFilter, setListParams } from "../../pages/customer-man
 import { useEffect, useState } from "react";
 
 const STATUS_OPTIONS = ["ACTIVE", "INACTIVE"];
+const STATUS_OPTIONSs = [{
+    label: 'Active', key: 'ACTIVE',
+}, {
+    label: 'Inactive', key: 'INACTIVE',
+}
+];
 
 export default function Filter({ closeFilter }) {
     const dispatch = useDispatch<AppDispatch>();
@@ -98,13 +104,24 @@ export default function Filter({ closeFilter }) {
                             multiple
                             value={tempStatus}
                             onChange={handleChange}
-                            renderValue={(selected) => selected.join(", ")}
+                            // renderValue={(selected) => selected.join(", ")}
                             label="Status"
+                            renderValue={(selected) => {
+                                if (selected.length === 0) {
+                                    return <span style={{ color: "#9ca3af" }}>Select Status</span>;
+                                }
+                                return selected
+                                    .map((key) => {
+                                        const item = STATUS_OPTIONSs.find((s) => s.key === key);
+                                        return item?.label;
+                                    })
+                                    .join(", ");
+                            }}
                         >
-                            {STATUS_OPTIONS.map((status) => (
-                                <MenuItem key={status} value={status}>
-                                    <Checkbox checked={tempStatus.includes(status)} />
-                                    <ListItemText primary={status} />
+                            {STATUS_OPTIONSs.map((status) => (
+                                <MenuItem key={status.key} value={status.key}>
+                                    <Checkbox checked={tempStatus.includes(status.key)} />
+                                    <ListItemText primary={status.label} />
                                 </MenuItem>
                             ))}
                         </Select>
