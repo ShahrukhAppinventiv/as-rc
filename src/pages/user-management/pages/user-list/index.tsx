@@ -8,6 +8,7 @@ import Fitler from "@components/filter";
 import CommonTable from "@components/table";
 import Pagination from "@components/pagination/Pagination";
 import { Paths } from "@constants/path";
+import { ErrorBoundary } from "react-error-boundary";
 
 export default function UserList() {
     const {
@@ -36,7 +37,9 @@ export default function UserList() {
 
     return (
         <>
-            <Breadcrumbs items={breadcrumb} />
+            <ErrorBoundary fallback={<div>Fallback Component</div>}>
+                <Breadcrumbs items={breadcrumb} />
+            </ErrorBoundary>
             <div className="flex justify-between items-center">
                 <SearchBox
                     placeholder="Search by Name, Email"
